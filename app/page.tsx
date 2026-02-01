@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Link from 'next/link'
 import { BookOpen, BarChart3, Settings, Zap, Users, Shield } from 'lucide-react'
 
@@ -167,32 +166,6 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-=======
-import { AdminSidebar } from "@/components/admin-sidebar"
-import { AdminHeader } from "@/components/admin-header"
-import { ExamsTable } from "@/components/exams-table"
-import { CreateExamModal } from "@/components/create-exam-modal"
-
-export default function ExamsPage() {
-  return (
-    <div className="min-h-screen bg-background">
-      <AdminSidebar />
-      <div className="pl-60">
-        <AdminHeader title="Exams" />
-        <main className="p-6">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-foreground">Manage Exams</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Create, edit, and manage your examination content
-              </p>
-            </div>
-            <CreateExamModal />
-          </div>
-          <ExamsTable />
-        </main>
-      </div>
->>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
     </div>
   )
 }
