@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
@@ -21,11 +22,20 @@ export async function middleware(request: NextRequest) {
       },
     }
   )
+=======
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { createClient } from '@/lib/supabase/middleware'
+
+export async function middleware(request: NextRequest) {
+  const { supabase, response } = createClient(request)
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
 
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
+<<<<<<< HEAD
   const pathname = request.nextUrl.pathname
 
   /* ----------------------------------------
@@ -59,11 +69,19 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/user') && role === 'admin') {
       return NextResponse.redirect(new URL('/admin/dashboard', request.url))
     }
+=======
+  if (!user && request.nextUrl.pathname.startsWith('/user')) {
+    return NextResponse.redirect(new URL('/login', request.url))
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
   }
 
   return response
 }
 
 export const config = {
+<<<<<<< HEAD
   matcher: ['/admin/:path*', '/user/:path*', '/login'],
+=======
+  matcher: ['/user/:path*'],
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
 }

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+=======
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
 
 export default async function UserDashboardPage() {
   const supabase = await createClient()
@@ -39,6 +44,11 @@ export default async function UserDashboardPage() {
     .limit(1)
     .single()
 
+<<<<<<< HEAD
+=======
+    console.log(category)
+
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
   let unlockedExam = null
 
   if (category && level) {
@@ -67,6 +77,7 @@ export default async function UserDashboardPage() {
       {/* Status Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <DashboardCard
+<<<<<<< HEAD
           title="Today's Status"
           value={dailyStatus?.has_attempted_today ? 'Completed' : 'Available'}
         />
@@ -80,10 +91,27 @@ export default async function UserDashboardPage() {
           title="Can Attempt Exam"
           value={dailyStatus?.has_attempted_today ? 'No' : 'Yes'}
         />
+=======
+  title="Today's Status"
+  value={dailyStatus?.has_attempted_today ? 'Completed' : 'Available'}
+/>
+
+<DashboardCard
+  title="Current Streak"
+  value={`${dailyStatus?.streak_days ?? 0} days`}
+/>
+
+<DashboardCard
+  title="Can Attempt Exam"
+  value={dailyStatus?.has_attempted_today ? 'No' : 'Yes'}
+/>
+
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
       </div>
 
       {/* Unlocked Exam */}
       <div className="rounded-xl border bg-white p-4">
+<<<<<<< HEAD
         <p className="text-sm text-slate-500">Today's Unlocked Exam</p>
 
         {unlockedExam ? (
@@ -101,6 +129,26 @@ export default async function UserDashboardPage() {
           </p>
         )}
       </div>
+=======
+  <p className="text-sm text-slate-500">Today’s Unlocked Exam</p>
+
+  {unlockedExam ? (
+    <div className="mt-2">
+      <p className="text-lg font-semibold">
+        {unlockedExam.title}
+      </p>
+      <p className="text-sm text-slate-500">
+        {unlockedExam.total_questions} questions · {unlockedExam.duration_minutes} mins
+      </p>
+    </div>
+  ) : (
+    <p className="mt-2 text-slate-500">
+      No exam unlocked for today.
+    </p>
+  )}
+</div>
+
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
     </div>
   )
 }

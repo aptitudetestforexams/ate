@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Link from 'next/link'
 import { Shield, Home } from 'lucide-react'
 
@@ -28,6 +29,18 @@ export default function UnauthorizedPage() {
           <Home className="w-5 h-5" />
           Return to Dashboard
         </Link>
+=======
+export default function UnauthorizedPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="rounded-lg bg-white p-8 shadow">
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Access Denied
+        </h1>
+        <p className="mt-2 text-slate-600">
+          You do not have permission to access this page.
+        </p>
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
       </div>
     </div>
   )

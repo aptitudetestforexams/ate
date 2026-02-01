@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import React from "react"
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
@@ -7,8 +11,13 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: 'v0 App',
   description: 'Created with v0',
+=======
+  title: 'ExamAdmin - Dashboard',
+  description: 'Admin dashboard for managing exams, questions, and users',
+>>>>>>> 65af45917c67d13b911016a7bbd7d9c5361639a3
   generator: 'v0.app',
   icons: {
     icon: [
