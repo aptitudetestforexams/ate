@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   BarChart3,
   BookOpen,
@@ -14,38 +14,26 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { createSupabaseClient } from '@/lib/supabase/client'
 
 const adminMenuItems = [
-  {
-    label: 'Dashboard',
-    href: '/admin/dashboard',
-    icon: BarChart3,
-  },
-  {
-    label: 'Exams',
-    href: '/admin/exams',
-    icon: BookOpen,
-  },
-  {
-    label: 'Users',
-    href: '/admin/users',
-    icon: Users,
-  },
-  {
-    label: 'Reports',
-    href: '/admin/reports',
-    icon: FileText,
-  },
-  {
-    label: 'Settings',
-    href: '/admin/settings',
-    icon: Settings,
-  },
+  { label: 'Dashboard', href: '/admin/dashboard', icon: BarChart3 },
+  { label: 'Exams', href: '/admin/exams', icon: BookOpen },
+  { label: 'Users', href: '/admin/users', icon: Users },
+  { label: 'Reports', href: '/admin/reports', icon: FileText },
+  { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
 export function AdminSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createSupabaseClient()
   const [isOpen, setIsOpen] = useState(false)
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    router.replace('/login')
+  }
 
   return (
     <>
@@ -59,7 +47,7 @@ export function AdminSidebar() {
       </Button>
 
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 md:relative ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
@@ -70,55 +58,42 @@ export function AdminSidebar() {
               <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-sidebar-primary-foreground" />
               </div>
-              <span className="font-bold text-lg text-sidebar-foreground">
-                ExamHub
-              </span>
+              <span className="font-bold text-lg">ExamHub</span>
             </Link>
           </div>
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {adminMenuItems.map((item) => {
-              const isActive = pathname.startsWith(item.href)
-              const Icon = item.icon
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-                      : 'text-sidebar-foreground hover:bg-sidebar-accent'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              )
-            })}
+            {adminMenuItems.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+                  pathname.startsWith(href)
+                    ? 'bg-sidebar-primary text-sidebar-primary-foreground'
+                    : 'hover:bg-sidebar-accent'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Footer */}
+          {/* Logout */}
           <div className="p-4 border-t border-sidebar-border">
             <Button
               variant="ghost"
-              className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
+              onClick={handleLogout}
+              className="w-full justify-start gap-3"
             >
               <LogOut className="w-5 h-5" />
-              <span>Logout</span>
+              Logout
             </Button>
           </div>
         </div>
       </aside>
-
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 md:hidden z-20"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
     </>
   )
 }

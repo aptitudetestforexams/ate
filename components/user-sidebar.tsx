@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   BookOpen,
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { createSupabaseClient } from '@/lib/supabase/client'
 
 const userMenuItems = [
   {
@@ -33,7 +34,16 @@ const userMenuItems = [
 
 export function UserSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+
+  const supabase = createSupabaseClient()
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    setIsOpen(false)
+    router.replace('/login')
+  }
 
   return (
     <>
@@ -54,7 +64,11 @@ export function UserSidebar() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b border-sidebar-border">
-            <Link href="/user/dashboard" className="flex items-center gap-2">
+            <Link
+              href="/user/dashboard"
+              className="flex items-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
               <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-sidebar-primary-foreground" />
               </div>
@@ -69,6 +83,7 @@ export function UserSidebar() {
             {userMenuItems.map((item) => {
               const isActive = pathname.startsWith(item.href)
               const Icon = item.icon
+
               return (
                 <Link
                   key={item.href}
@@ -92,6 +107,7 @@ export function UserSidebar() {
             <Button
               variant="ghost"
               className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent"
+              onClick={handleLogout}
             >
               <LogOut className="w-5 h-5" />
               <span>Logout</span>
