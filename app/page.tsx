@@ -115,47 +115,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* CTA Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Student Section */}
-          <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-200">
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-8">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary mb-4">
-                <BookOpen className="w-7 h-7 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">For Students</h3>
-              <p className="text-muted-foreground mb-6">
-                Start practicing today and improve your exam scores with our comprehensive question database.
-              </p>
-              <Link
-                href="/login?mode=signup"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200"
-              >
-                Create Student Account
-              </Link>
-            </div>
-          </div>
-
-          {/* Admin Section */}
-          <div className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-all duration-200">
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-8">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary mb-4">
-                <Shield className="w-7 h-7 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">For Administrators</h3>
-              <p className="text-muted-foreground mb-6">
-                Create exams, manage content, view detailed reports, and control the entire platform.
-              </p>
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all duration-200"
-              >
-                Admin Login
-              </Link>
-            </div>
-          </div>
-        </div>
       </main>
 
       {/* Footer */}

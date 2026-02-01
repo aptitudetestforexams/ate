@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server-auth'
+import { UserSidebar } from '@/components/user-sidebar'
 
 export default async function UserLayout({
   children,
@@ -21,5 +22,10 @@ export default async function UserLayout({
 
   if (profile?.role === 'admin') redirect('/admin/dashboard')
 
-  return <>{children}</>
+  return (
+    <div className="flex min-h-screen bg-slate-50">
+      <UserSidebar />
+      <main className="flex-1 overflow-auto">{children}</main>
+    </div>
+  )
 }
