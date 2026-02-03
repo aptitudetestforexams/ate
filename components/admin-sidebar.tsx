@@ -35,8 +35,12 @@ export function AdminSidebar() {
     router.replace('/login')
   }
 
+  const isActiveRoute = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`)
+
   return (
     <>
+      {/* Mobile toggle */}
       <Button
         variant="ghost"
         size="icon"
@@ -46,6 +50,7 @@ export function AdminSidebar() {
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
 
+      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-30 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 md:relative ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -54,7 +59,10 @@ export function AdminSidebar() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b border-sidebar-border">
-            <Link href="/admin/dashboard" className="flex items-center gap-2">
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-2"
+            >
               <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-sidebar-primary-foreground" />
               </div>
@@ -69,8 +77,8 @@ export function AdminSidebar() {
                 key={href}
                 href={href}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
-                  pathname.startsWith(href)
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  isActiveRoute(href)
                     ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                     : 'hover:bg-sidebar-accent'
                 }`}

@@ -35,30 +35,42 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/admin') || pathname.startsWith('/user')) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
+    return response
   }
 
   /* ----------------------------------------
-     2️⃣ LOGGED IN → redirect by role (single profile fetch, no loop)
+     2️⃣ LOGGED IN → fetch role
+     (IMPORTANT: guard undefined profile)
   ----------------------------------------- */
-  if (user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-    const role = profile?.role
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
 
-    if (pathname === '/login') {
-      const dashboard =
-        role === 'admin' ? '/admin/dashboard' : '/user/dashboard'
-      return NextResponse.redirect(new URL(dashboard, request.url))
-    }
-    if (pathname.startsWith('/admin') && role !== 'admin') {
-      return NextResponse.redirect(new URL('/user/dashboard', request.url))
-    }
-    if (pathname.startsWith('/user') && role === 'admin') {
-      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
-    }
+  // 🚨 CRITICAL GUARD
+  if (!profile?.role) {
+    // Allow request to continue, do NOT redirect
+    return response
+  }
+
+  const role = profile.role
+
+  /* ----------------------------------------
+     3️⃣ Redirect rules (role is now SAFE)
+  ----------------------------------------- */
+  if (pathname === '/login') {
+    const dashboard =
+      role === 'admin' ? '/admin/dashboard' : '/user/dashboard'
+    return NextResponse.redirect(new URL(dashboard, request.url))
+  }
+
+  if (pathname.startsWith('/admin') && role === 'user') {
+    return NextResponse.redirect(new URL('/user/dashboard', request.url))
+  }
+
+  if (pathname.startsWith('/user') && role === 'admin') {
+    return NextResponse.redirect(new URL('/admin/dashboard', request.url))
   }
 
   return response

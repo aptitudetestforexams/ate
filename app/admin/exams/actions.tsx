@@ -66,7 +66,7 @@ export async function createExam(input: CreateExamInput) {
     exam_order: input.examOrder,
     duration_minutes: input.durationMinutes,
     total_questions: input.totalQuestions,
-    is_active: true,
+    is_active: false,
   })
 
   if (error) {

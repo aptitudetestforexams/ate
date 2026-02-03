@@ -1,7 +1,15 @@
 // app/admin/exams/page.tsx
-
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import CreateExamButton from './_components/CreateExamButton'
+
+type RelationWithName = { name: string } | null
+
+function getRelationName(rel: RelationWithName | RelationWithName[] | null): string | undefined {
+  if (!rel) return undefined
+  const item = Array.isArray(rel) ? rel[0] : rel
+  return item?.name
+}
 
 export default async function AdminExamsPage() {
   const supabase = await createClient()
@@ -62,20 +70,22 @@ export default async function AdminExamsPage() {
               >
                 <td className="px-4 py-3">{exam.exam_order}</td>
 
-                <td className="px-4 py-3 font-medium">
-                  {exam.title}
+                <td className="font-medium">
+                  <Link
+                    href={`/admin/exams/${exam.id}/questions`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {exam.title}
+                  </Link>
+                </td>
+
+
+                <td className="px-4 py-3">
+                  {getRelationName(exam.exam_categories as RelationWithName | RelationWithName[] | null)}
                 </td>
 
                 <td className="px-4 py-3">
-                  {Array.isArray(exam.exam_categories)
-                    ? exam.exam_categories[0]?.name
-                    : exam.exam_categories?.name}
-                </td>
-
-                <td className="px-4 py-3">
-                  {Array.isArray(exam.exam_levels)
-                    ? exam.exam_levels[0]?.name
-                    : exam.exam_levels?.name}
+                  {getRelationName(exam.exam_levels as RelationWithName | RelationWithName[] | null)}
                 </td>
 
                 <td className="px-4 py-3">

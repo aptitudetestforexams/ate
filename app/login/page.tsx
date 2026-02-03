@@ -13,6 +13,8 @@ export default function LoginPage() {
   const [mode, setMode] = useState<Mode>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
@@ -67,13 +69,34 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signUp({
+    if (!fullName || !phoneNumber) {
+      setError('Full name and phone number are required')
+      setLoading(false)
+      return
+    }
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     })
 
-    if (error) {
-      setError(error.message)
+    if (error || !data.user) {
+      setError(error?.message ?? 'Signup failed')
+      setLoading(false)
+      return
+    }
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        id: data.user.id,
+        full_name: fullName,
+        phone_number: phoneNumber,
+        role: 'user',
+      })
+
+    if (profileError) {
+      setError('Profile creation failed')
       setLoading(false)
       return
     }
@@ -126,6 +149,28 @@ export default function LoginPage() {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
         {message && <p className="text-sm text-emerald-600">{message}</p>}
+
+        {mode === 'signup' && (
+          <>
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+              className="w-full rounded-md border px-3 py-2"
+            />
+
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+              className="w-full rounded-md border px-3 py-2"
+            />
+          </>
+        )}
 
         <input
           type="email"
