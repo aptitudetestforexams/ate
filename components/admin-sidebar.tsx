@@ -11,14 +11,22 @@ import {
   LogOut,
   Menu,
   X,
+  Folder,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { createSupabaseClient } from '@/lib/supabase/client'
 
-const adminMenuItems = [
+const mainMenuItems = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: BarChart3 },
-  { label: 'Exams', href: '/admin/exams', icon: BookOpen },
+]
+
+const examManagerItems = [
+  { label: 'Categories', href: '/admin/exams/categories' },
+  { label: 'Exams', href: '/admin/exams' }
+]
+
+const secondaryMenuItems = [
   { label: 'Users', href: '/admin/users', icon: Users },
   { label: 'Reports', href: '/admin/reports', icon: FileText },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
@@ -28,7 +36,11 @@ export function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createSupabaseClient()
+
   const [isOpen, setIsOpen] = useState(false)
+  const [examManagerOpen, setExamManagerOpen] = useState(
+    pathname.startsWith('/admin/exams')
+  )
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -59,10 +71,7 @@ export function AdminSidebar() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b border-sidebar-border">
-            <Link
-              href="/admin/dashboard"
-              className="flex items-center gap-2"
-            >
+            <Link href="/admin/dashboard" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-sidebar-primary-foreground" />
               </div>
@@ -72,7 +81,62 @@ export function AdminSidebar() {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {adminMenuItems.map(({ href, label, icon: Icon }) => (
+            {/* Main */}
+            {mainMenuItems.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  isActiveRoute(href)
+                    ? 'bg-sidebar-primary text-sidebar-primary-foreground'
+                    : 'hover:bg-sidebar-accent'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </Link>
+            ))}
+
+            {/* Exam Manager */}
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={() => setExamManagerOpen((v) => !v)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  examManagerOpen
+                    ? 'bg-sidebar-primary text-sidebar-primary-foreground'
+                    : 'hover:bg-sidebar-accent'
+                }`}
+              >
+                <Folder className="w-5 h-5" />
+                Exam Manager
+              </button>
+
+              {examManagerOpen && (
+                <div className="ml-8 mt-1 space-y-1">
+                  {examManagerItems.map(({ href, label }) => (
+                    <Link
+                      key={label}
+                      href={href}
+                      onClick={() => setIsOpen(false)}
+                      className={`block rounded-md px-3 py-2 text-sm transition-colors ${
+                        pathname === href ||
+                        (label === 'Questions' &&
+                          pathname.includes('/questions'))
+                          ? 'bg-sidebar-accent font-medium'
+                          : 'hover:bg-sidebar-accent'
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Secondary */}
+            {secondaryMenuItems.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}

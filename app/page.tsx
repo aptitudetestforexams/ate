@@ -19,9 +19,9 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-5">
         {/* Hero Section */}
-        <div className="mb-20 text-center">
+        <div className="mb-5 text-center">
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
             Master Your Learning Journey
           </h2>
@@ -45,7 +45,7 @@ export default function HomePage() {
         </div>
 
         {/* Features Grid */}
-        <div id="features" className="mb-20">
+        <div id="features" className="mb-5">
           <h3 className="text-3xl font-bold text-foreground mb-12 text-center">Why Choose ExamPlatform?</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Student Features */}
@@ -118,7 +118,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/50 backdrop-blur-sm mt-20">
+      <footer className="border-t border-border bg-card/50 backdrop-blur-sm mt-5">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-muted-foreground text-sm">
             <p>&copy; 2024 ExamPlatform. All rights reserved.</p>
